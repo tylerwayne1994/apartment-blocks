@@ -208,6 +208,9 @@ export default function SubmitProperty() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
 
   // Check auth on component mount
   useEffect(() => {
@@ -219,6 +222,29 @@ export default function SubmitProperty() {
     if (!user) {
       alert('Please log in to submit a property');
       navigate('/login');
+      return;
+    }
+    
+    // Check if admin
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+    
+    if (profile?.role === 'admin') {
+      setIsAdmin(true);
+      setSelectedUserId(user.id); // Default to self
+      
+      // Load all users for dropdown
+      const { data: users } = await supabase
+        .from('profiles')
+        .select('id, email, first_name, last_name')
+        .order('email');
+      
+      if (users) {
+        setAllUsers(users);
+      }
     }
   };
 
@@ -462,7 +488,7 @@ export default function SubmitProperty() {
       }
 
       const propertyData = {
-        user_id: user.id,
+        user_id: selectedUserId || user.id, // Use selected user if admin, otherwise current user
         title: propertyTitle,
         address: address,
         city: city,
@@ -1406,6 +1432,33 @@ export default function SubmitProperty() {
   return (
     <div style={containerStyle}>
       <div style={wizardContainerStyle}>
+        {isAdmin && (
+          <div style={{padding: '24px 40px', borderBottom: '1px solid #ddd', background: '#fffbea'}}>
+            <label style={{fontSize: '14px', fontWeight: '600', color: '#000', display: 'block', marginBottom: '8px'}}>
+              🛡️ Admin: Post on Behalf of User
+            </label>
+            <select
+              value={selectedUserId}
+              onChange={(e) => setSelectedUserId(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '12px',
+                fontSize: '16px',
+                border: '2px solid #ffa000',
+                borderRadius: '6px',
+                background: '#fff'
+              }}
+            >
+              <option value="">Select user...</option>
+              {allUsers.map(u => (
+                <option key={u.id} value={u.id}>
+                  {u.email} {u.first_name && u.last_name ? `(${u.first_name} ${u.last_name})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+        
         <div style={progressBarStyle}>
           <div style={stepStyle(currentStep === 1, currentStep > 1)}>1. Basics</div>
           <div style={stepStyle(currentStep === 2, currentStep > 2)}>2. Financials</div>

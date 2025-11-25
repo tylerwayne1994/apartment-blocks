@@ -1300,6 +1300,9 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [profile, setProfile] = useState(null);
+  const [editingPassword, setEditingPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState([]);
 
@@ -1586,6 +1589,93 @@ export default function Dashboard() {
                   <span style={labelStyle}>Phone</span>
                   <span style={valueStyle}>{profile.phone}</span>
                 </div>
+                
+                <div style={{...fieldStyle, marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #ddd'}}>
+                  <span style={labelStyle}>Password</span>
+                  {editingPassword ? (
+                    <div style={{display: 'flex', gap: '8px', marginTop: '8px'}}>
+                      <input
+                        type="password"
+                        placeholder="New password (min 6 characters)"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        style={inputStyle}
+                      />
+                      <button
+                        onClick={async () => {
+                          if (newPassword.length < 6) {
+                            setPasswordError('Password must be at least 6 characters');
+                            return;
+                          }
+                          const { error } = await supabase.auth.updateUser({ password: newPassword });
+                          if (error) {
+                            setPasswordError(error.message);
+                          } else {
+                            setEditingPassword(false);
+                            setNewPassword('');
+                            setPasswordError('');
+                            alert('Password updated successfully!');
+                          }
+                        }}
+                        style={{
+                          padding: '12px 24px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          background: '#000',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingPassword(false);
+                          setNewPassword('');
+                          setPasswordError('');
+                        }}
+                        style={{
+                          padding: '12px 24px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          background: '#fff',
+                          color: '#666',
+                          border: '1px solid #ddd',
+                          borderRadius: '8px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setEditingPassword(true)}
+                      style={{
+                        marginTop: '8px',
+                        padding: '12px 24px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        background: '#fff',
+                        color: '#000',
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Change Password
+                    </button>
+                  )}
+                  {passwordError && (
+                    <div style={{marginTop: '8px', color: '#f44336', fontSize: '14px'}}>
+                      {passwordError}
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={async () => {
                     await supabase.auth.signOut();
