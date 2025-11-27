@@ -8,7 +8,8 @@ const containerStyle = {
 
 const heroStyle = {
   position: 'relative',
-  height: '600px',
+  minHeight: '500px',
+  height: 'clamp(400px, 60vh, 600px)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -34,19 +35,20 @@ const heroContentStyle = {
   textAlign: 'center',
   color: '#fff',
   maxWidth: '900px',
-  padding: '0 24px'
+  width: '100%',
+  padding: '0 20px'
 };
 
 const heroTitleStyle = {
-  fontSize: '64px',
+  fontSize: 'clamp(32px, 8vw, 64px)',
   fontWeight: '900',
-  margin: '0 0 24px',
-  letterSpacing: '-2px',
+  margin: '0 0 16px',
+  letterSpacing: '-1px',
   lineHeight: '1.1'
 };
 
 const heroSubtitleStyle = {
-  fontSize: '24px',
+  fontSize: 'clamp(16px, 4vw, 24px)',
   fontWeight: '400',
   margin: '0 0 40px',
   lineHeight: '1.5',
@@ -55,42 +57,45 @@ const heroSubtitleStyle = {
 
 const ctaContainerStyle = {
   display: 'flex',
-  gap: '16px',
-  justifyContent: 'center'
+  gap: '12px',
+  justifyContent: 'center',
+  flexWrap: 'wrap'
 };
 
 const primaryButtonStyle = {
-  padding: '16px 40px',
-  fontSize: '18px',
+  padding: 'clamp(12px, 3vw, 16px) clamp(24px, 6vw, 40px)',
+  fontSize: 'clamp(14px, 3vw, 18px)',
   fontWeight: '700',
   background: '#000',
   color: '#fff',
   border: 'none',
   borderRadius: '8px',
   cursor: 'pointer',
-  transition: 'transform 0.2s ease'
+  transition: 'transform 0.2s ease',
+  whiteSpace: 'nowrap'
 };
 
 const secondaryButtonStyle = {
-  padding: '16px 40px',
-  fontSize: '18px',
+  padding: 'clamp(12px, 3vw, 16px) clamp(24px, 6vw, 40px)',
+  fontSize: 'clamp(14px, 3vw, 18px)',
   fontWeight: '700',
   background: '#fff',
   color: '#000',
   border: '2px solid #fff',
   borderRadius: '8px',
   cursor: 'pointer',
-  transition: 'transform 0.2s ease'
+  transition: 'transform 0.2s ease',
+  whiteSpace: 'nowrap'
 };
 
 const sectionStyle = {
   maxWidth: '1200px',
   margin: '0 auto',
-  padding: '80px 24px'
+  padding: 'clamp(40px, 10vw, 80px) clamp(16px, 4vw, 24px)'
 };
 
 const sectionTitleStyle = {
-  fontSize: '48px',
+  fontSize: 'clamp(28px, 6vw, 48px)',
   fontWeight: '800',
   textAlign: 'center',
   margin: '0 0 16px',
@@ -98,9 +103,9 @@ const sectionTitleStyle = {
 };
 
 const sectionSubtitleStyle = {
-  fontSize: '20px',
+  fontSize: 'clamp(16px, 3vw, 20px)',
   textAlign: 'center',
-  margin: '0 0 64px',
+  margin: '0 0 clamp(32px, 8vw, 64px)',
   color: '#555',
   maxWidth: '800px',
   marginLeft: 'auto',
@@ -109,27 +114,27 @@ const sectionSubtitleStyle = {
 
 const gridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '32px',
-  marginBottom: '48px'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+  gap: 'clamp(16px, 4vw, 32px)',
+  marginBottom: 'clamp(24px, 6vw, 48px)'
 };
 
 const featureCardStyle = {
   background: '#f9f9f9',
-  padding: '32px',
+  padding: 'clamp(20px, 5vw, 32px)',
   borderRadius: '12px',
   border: '1px solid #e0e0e0'
 };
 
 const featureTitleStyle = {
-  fontSize: '22px',
+  fontSize: 'clamp(18px, 4vw, 22px)',
   fontWeight: '700',
   margin: '0 0 12px',
   color: '#000'
 };
 
 const featureTextStyle = {
-  fontSize: '16px',
+  fontSize: 'clamp(14px, 3vw, 16px)',
   lineHeight: '1.6',
   color: '#333',
   margin: 0
@@ -137,7 +142,7 @@ const featureTextStyle = {
 
 const finalCTAStyle = {
   textAlign: 'center',
-  padding: '80px 24px',
+  padding: 'clamp(40px, 10vw, 80px) clamp(16px, 4vw, 24px)',
   background: '#000',
   color: '#fff'
 };

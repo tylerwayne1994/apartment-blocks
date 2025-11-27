@@ -266,6 +266,39 @@ export default function SubmitProperty() {
   const [annualTaxes, setAnnualTaxes] = useState('');
   const [annualInsurance, setAnnualInsurance] = useState('');
   const [utilitiesPaidBy, setUtilitiesPaidBy] = useState('');
+  
+  // Additional Financial Fields (matching underwriting wizard)
+  const [financingType, setFinancingType] = useState('Traditional');
+  const [downPaymentPercent, setDownPaymentPercent] = useState('');
+  const [termYears, setTermYears] = useState('');
+  const [loanAmount, setLoanAmount] = useState('');
+  const [monthlyPayment, setMonthlyPayment] = useState('');
+  const [amortizationYears, setAmortizationYears] = useState('');
+  const [interestRate, setInterestRate] = useState('');
+  const [annualDebtService, setAnnualDebtService] = useState('');
+  const [realtorFeesPercent, setRealtorFeesPercent] = useState('');
+  const [closingCostsPercent, setClosingCostsPercent] = useState('');
+  const [acquisitionFeesPercent, setAcquisitionFeesPercent] = useState('');
+  const [rehabCost, setRehabCost] = useState('');
+  
+  // Expense Fields (matching underwriting wizard)
+  const [vacancyRatePercent, setVacancyRatePercent] = useState('');
+  const [propertyManagementPercent, setPropertyManagementPercent] = useState('');
+  const [capexPercent, setCapexPercent] = useState('');
+  const [repairsMaintenance, setRepairsMaintenance] = useState('');
+  const [managementFees, setManagementFees] = useState('');
+  const [payroll, setPayroll] = useState('');
+  const [otherExpenses, setOtherExpenses] = useState('');
+  
+  // Monthly Utilities (matching underwriting wizard)
+  const [monthlyGas, setMonthlyGas] = useState('');
+  const [monthlyElectrical, setMonthlyElectrical] = useState('');
+  const [monthlyWater, setMonthlyWater] = useState('');
+  const [monthlySewer, setMonthlySewer] = useState('');
+  const [monthlyTrash, setMonthlyTrash] = useState('');
+  
+  // Proforma Rent by Unit Type
+  const [proformaRents, setProformaRents] = useState([{ type: '', units: '', rent: '' }]);
 
   // Step 3: Occupancy (REQUIRED)
   const [occupancyPercent, setOccupancyPercent] = useState('');
@@ -512,6 +545,40 @@ export default function SubmitProperty() {
         annual_opex: opex ? parseFloat(opex) : null,
         utilities_paid_by: utilitiesPaidBy,
         occupancy_percent: occupancyUnknown ? null : parseFloat(occupancyPercent),
+        
+        // New financial fields
+        financing_type: financingType || null,
+        down_payment_percent: downPaymentPercent ? parseFloat(downPaymentPercent) : null,
+        term_years: termYears ? parseInt(termYears) : null,
+        loan_amount: loanAmount ? parseFloat(loanAmount) : null,
+        monthly_payment: monthlyPayment ? parseFloat(monthlyPayment) : null,
+        amortization_years: amortizationYears ? parseInt(amortizationYears) : null,
+        interest_rate: interestRate ? parseFloat(interestRate) : null,
+        annual_debt_service: annualDebtService ? parseFloat(annualDebtService) : null,
+        realtor_fees_percent: realtorFeesPercent ? parseFloat(realtorFeesPercent) : null,
+        closing_costs_percent: closingCostsPercent ? parseFloat(closingCostsPercent) : null,
+        acquisition_fees_percent: acquisitionFeesPercent ? parseFloat(acquisitionFeesPercent) : null,
+        rehab_cost: rehabCost ? parseFloat(rehabCost) : null,
+        
+        // Expense breakdown fields
+        vacancy_rate_percent: vacancyRatePercent ? parseFloat(vacancyRatePercent) : null,
+        property_management_percent: propertyManagementPercent ? parseFloat(propertyManagementPercent) : null,
+        capex_percent: capexPercent ? parseFloat(capexPercent) : null,
+        repairs_maintenance: repairsMaintenance ? parseFloat(repairsMaintenance) : null,
+        management_fees: managementFees ? parseFloat(managementFees) : null,
+        payroll: payroll ? parseFloat(payroll) : null,
+        other_expenses: otherExpenses ? parseFloat(otherExpenses) : null,
+        
+        // Monthly utilities
+        monthly_gas: monthlyGas ? parseFloat(monthlyGas) : null,
+        monthly_electrical: monthlyElectrical ? parseFloat(monthlyElectrical) : null,
+        monthly_water: monthlyWater ? parseFloat(monthlyWater) : null,
+        monthly_sewer: monthlySewer ? parseFloat(monthlySewer) : null,
+        monthly_trash: monthlyTrash ? parseFloat(monthlyTrash) : null,
+        
+        // Proforma rents
+        proforma_rents: JSON.stringify(proformaRents),
+        
         seller_financing_available: sellerFinancing === 'Yes',
         seller_finance_loan_amount: sellerFinanceLoanAmount ? parseFloat(sellerFinanceLoanAmount) : null,
         seller_finance_down_payment: sellerFinanceDownPayment ? parseFloat(sellerFinanceDownPayment) : null,
@@ -876,6 +943,327 @@ export default function SubmitProperty() {
               />
             </div>
 
+            <div style={{marginTop:'40px',marginBottom:'24px',paddingTop:'24px',borderTop:'2px solid #f0f0f0'}}>
+              <h3 style={{fontSize:'20px',fontWeight:'700',marginBottom:'16px'}}>Pricing & Financing</h3>
+            </div>
+
+            <div style={fieldStyle}>
+              <label style={labelStyle(false)}>Financing Type</label>
+              <select
+                value={financingType}
+                onChange={(e) => setFinancingType(e.target.value)}
+                style={selectStyle}
+              >
+                <option value="Traditional">Traditional</option>
+                <option value="Cash">Cash</option>
+                <option value="Seller Finance">Seller Finance</option>
+                <option value="Assumable">Assumable</option>
+              </select>
+            </div>
+
+            <div style={rowStyle}>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Down Payment (%)</label>
+                <input
+                  type="number"
+                  value={downPaymentPercent}
+                  onChange={(e) => setDownPaymentPercent(e.target.value)}
+                  placeholder="25"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Term (Years)</label>
+                <input
+                  type="number"
+                  value={termYears}
+                  onChange={(e) => setTermYears(e.target.value)}
+                  placeholder="30"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={rowStyle}>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Amortization (Years)</label>
+                <input
+                  type="number"
+                  value={amortizationYears}
+                  onChange={(e) => setAmortizationYears(e.target.value)}
+                  placeholder="30"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Loan Amount</label>
+                <input
+                  type="number"
+                  value={loanAmount}
+                  onChange={(e) => setLoanAmount(e.target.value)}
+                  placeholder="1820000"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={rowStyle}>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Interest Rate (%)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value)}
+                  placeholder="6.5"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Monthly Payment</label>
+                <input
+                  type="number"
+                  value={monthlyPayment}
+                  onChange={(e) => setMonthlyPayment(e.target.value)}
+                  placeholder="0.00"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={fieldStyle}>
+              <label style={labelStyle(false)}>Annual Debt Service</label>
+              <input
+                type="number"
+                value={annualDebtService}
+                onChange={(e) => setAnnualDebtService(e.target.value)}
+                placeholder="0"
+                style={inputStyle}
+              />
+            </div>
+
+            <div style={{marginTop:'40px',marginBottom:'24px',paddingTop:'24px',borderTop:'2px solid #f0f0f0'}}>
+              <h3 style={{fontSize:'20px',fontWeight:'700',marginBottom:'16px'}}>Acquisition & Disposition Costs</h3>
+            </div>
+
+            <div style={rowStyle}>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Realtor Fees (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={realtorFeesPercent}
+                  onChange={(e) => setRealtorFeesPercent(e.target.value)}
+                  placeholder="3"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Closing Costs (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={closingCostsPercent}
+                  onChange={(e) => setClosingCostsPercent(e.target.value)}
+                  placeholder="2"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={rowStyle}>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Disposition/Acquisition Fee (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={acquisitionFeesPercent}
+                  onChange={(e) => setAcquisitionFeesPercent(e.target.value)}
+                  placeholder="1"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Rehab Cost</label>
+                <input
+                  type="number"
+                  value={rehabCost}
+                  onChange={(e) => setRehabCost(e.target.value)}
+                  placeholder="0"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={{marginTop:'40px',marginBottom:'24px',paddingTop:'24px',borderTop:'2px solid #f0f0f0'}}>
+              <h3 style={{fontSize:'20px',fontWeight:'700',marginBottom:'16px'}}>Operating Expenses Breakdown</h3>
+            </div>
+
+            <div style={{marginBottom:'16px',padding:'16px',background:'#f9f9f9',borderRadius:'6px'}}>
+              <h4 style={{fontSize:'14px',fontWeight:'700',marginBottom:'12px'}}>Percentage-Based Expenses</h4>
+              <div style={rowStyle}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Vacancy Rate (%)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={vacancyRatePercent}
+                    onChange={(e) => setVacancyRatePercent(e.target.value)}
+                    placeholder="5"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Property Management (%)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={propertyManagementPercent}
+                    onChange={(e) => setPropertyManagementPercent(e.target.value)}
+                    placeholder="8"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Capital Expenditures (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={capexPercent}
+                  onChange={(e) => setCapexPercent(e.target.value)}
+                  placeholder="5"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={{marginBottom:'16px',padding:'16px',background:'#f9f9f9',borderRadius:'6px'}}>
+              <h4 style={{fontSize:'14px',fontWeight:'700',marginBottom:'12px'}}>Fixed Annual Expenses</h4>
+              <div style={rowStyle}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Repairs & Maintenance</label>
+                  <input
+                    type="number"
+                    value={repairsMaintenance}
+                    onChange={(e) => setRepairsMaintenance(e.target.value)}
+                    placeholder="4400"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Management Fees</label>
+                  <input
+                    type="number"
+                    value={managementFees}
+                    onChange={(e) => setManagementFees(e.target.value)}
+                    placeholder="6712"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+              <div style={rowStyle}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Payroll</label>
+                  <input
+                    type="number"
+                    value={payroll}
+                    onChange={(e) => setPayroll(e.target.value)}
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Other Expenses</label>
+                  <input
+                    type="number"
+                    value={otherExpenses}
+                    onChange={(e) => setOtherExpenses(e.target.value)}
+                    placeholder="250"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={{marginBottom:'16px',padding:'16px',background:'#f9f9f9',borderRadius:'6px'}}>
+              <h4 style={{fontSize:'14px',fontWeight:'700',marginBottom:'12px'}}>Utilities (Monthly)</h4>
+              <div style={rowStyle}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Gas (Monthly)</label>
+                  <input
+                    type="number"
+                    value={monthlyGas}
+                    onChange={(e) => setMonthlyGas(e.target.value)}
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Electrical (Monthly)</label>
+                  <input
+                    type="number"
+                    value={monthlyElectrical}
+                    onChange={(e) => setMonthlyElectrical(e.target.value)}
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+              <div style={rowStyle}>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Water (Monthly)</label>
+                  <input
+                    type="number"
+                    value={monthlyWater}
+                    onChange={(e) => setMonthlyWater(e.target.value)}
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={fieldStyle}>
+                  <label style={labelStyle(false)}>Sewer (Monthly)</label>
+                  <input
+                    type="number"
+                    value={monthlySewer}
+                    onChange={(e) => setMonthlySewer(e.target.value)}
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+              <div style={fieldStyle}>
+                <label style={labelStyle(false)}>Trash (Monthly)</label>
+                <input
+                  type="number"
+                  value={monthlyTrash}
+                  onChange={(e) => setMonthlyTrash(e.target.value)}
+                  placeholder="0"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={{marginTop:'12px',padding:'12px',background:'#fff',borderRadius:'4px',border:'1px solid #ddd'}}>
+                <div style={{fontSize:'14px',fontWeight:'600',color:'#666'}}>
+                  Total Utilities: ${(
+                    (parseFloat(monthlyGas) || 0) +
+                    (parseFloat(monthlyElectrical) || 0) +
+                    (parseFloat(monthlyWater) || 0) +
+                    (parseFloat(monthlySewer) || 0) +
+                    (parseFloat(monthlyTrash) || 0)
+                  ).toLocaleString()}/month
+                </div>
+                <div style={{fontSize:'12px',color:'#999',marginTop:'4px'}}>
+                  Annual: ${((
+                    (parseFloat(monthlyGas) || 0) +
+                    (parseFloat(monthlyElectrical) || 0) +
+                    (parseFloat(monthlyWater) || 0) +
+                    (parseFloat(monthlySewer) || 0) +
+                    (parseFloat(monthlyTrash) || 0)
+                  ) * 12).toLocaleString()}
+                </div>
+              </div>
+            </div>
+
             <div style={fieldStyle}>
               <label style={labelStyle(true)}>
                 Who Pays Utilities?<span style={requiredStyle}>*</span>
@@ -893,6 +1281,97 @@ export default function SubmitProperty() {
               </select>
               {errors.utilitiesPaidBy && <div style={errorStyle}>{errors.utilitiesPaidBy}</div>}
             </div>
+
+            <div style={{marginTop:'40px',marginBottom:'24px',paddingTop:'24px',borderTop:'2px solid #f0f0f0'}}>
+              <h3 style={{fontSize:'20px',fontWeight:'700',marginBottom:'16px'}}>Proforma Rents</h3>
+            </div>
+
+            {proformaRents.map((item, index) => (
+              <div key={index} style={{marginBottom:'16px',padding:'16px',background:'#f9f9f9',borderRadius:'6px'}}>
+                <div style={rowStyle}>
+                  <div style={fieldStyle}>
+                    <label style={labelStyle(false)}>Type (Bed/Bath)</label>
+                    <input
+                      type="text"
+                      value={item.type}
+                      onChange={(e) => {
+                        const updated = [...proformaRents];
+                        updated[index].type = e.target.value;
+                        setProformaRents(updated);
+                      }}
+                      placeholder="e.g. 2BR/2BA"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div style={fieldStyle}>
+                    <label style={labelStyle(false)}>Units</label>
+                    <input
+                      type="number"
+                      value={item.units}
+                      onChange={(e) => {
+                        const updated = [...proformaRents];
+                        updated[index].units = e.target.value;
+                        setProformaRents(updated);
+                      }}
+                      placeholder="Number of units"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div style={fieldStyle}>
+                    <label style={labelStyle(false)}>Proforma Rent</label>
+                    <input
+                      type="number"
+                      value={item.rent}
+                      onChange={(e) => {
+                        const updated = [...proformaRents];
+                        updated[index].rent = e.target.value;
+                        setProformaRents(updated);
+                      }}
+                      placeholder="Rent per unit"
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+                {proformaRents.length > 1 && (
+                  <button
+                    onClick={() => {
+                      const updated = proformaRents.filter((_, i) => i !== index);
+                      setProformaRents(updated);
+                    }}
+                    style={{
+                      marginTop:'8px',
+                      padding:'8px 16px',
+                      background:'#f44336',
+                      color:'#fff',
+                      border:'none',
+                      borderRadius:'4px',
+                      cursor:'pointer',
+                      fontSize:'14px'
+                    }}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            
+            <button
+              onClick={() => setProformaRents([...proformaRents, { type: '', units: '', rent: '' }])}
+              style={{
+                padding:'12px 24px',
+                background:'#4caf50',
+                color:'#fff',
+                border:'none',
+                borderRadius:'6px',
+                cursor:'pointer',
+                fontSize:'14px',
+                fontWeight:'600',
+                marginBottom:'24px'
+              }}
+            >
+              + Add Another Unit Type
+            </button>
+
           </div>
         );
 

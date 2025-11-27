@@ -14,31 +14,34 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoidHlsZXJ3YXluZTEiLCJhIjoiY21oNzlqb2xwMHBybjJscHR
 
 const navStyle = {
   background: '#000',
-  padding: '20px 48px',
+  padding: 'clamp(12px, 3vw, 20px) clamp(16px, 4vw, 48px)',
   display: 'flex',
-  gap: '32px',
+  gap: 'clamp(12px, 3vw, 32px)',
   alignItems: 'center',
   boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
   position: 'sticky',
   top: 0,
-  zIndex: 1000
+  zIndex: 1000,
+  flexWrap: 'wrap'
 };
 
 const titleStyle = {
   margin: 0,
   color: '#fff',
-  fontSize: '28px',
+  fontSize: 'clamp(20px, 5vw, 28px)',
   fontWeight: '800',
   letterSpacing: '-0.5px',
-  marginRight: 'auto'
+  marginRight: 'auto',
+  whiteSpace: 'nowrap'
 };
 
 const linkStyle = {
   color: '#fff',
   textDecoration: 'none',
-  fontSize: '15px',
+  fontSize: 'clamp(13px, 3vw, 15px)',
   fontWeight: '500',
-  transition: 'opacity 0.2s ease'
+  transition: 'opacity 0.2s ease',
+  whiteSpace: 'nowrap'
 };
 
 const containerStyle = {
